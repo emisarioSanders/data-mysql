@@ -1,0 +1,27 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  data-mysql:
+    container_name: data-mysql
+    image: data-mysql:latest
+    ports:
+      - 8080:8080
+    networks:
+      - spring-network
+    depends_on:
+      - db
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+      - spring-network
+
+networks:
+  spring-network:
+    driver: bridge
